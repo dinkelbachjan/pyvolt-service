@@ -35,21 +35,28 @@ args = parser.parse_args()
 sequence = 1
 len_data = 300
 client_name = "DpsimDummy"
-topic_publish = "dpsim-powerflow"
 
-# Public Message Broker
-"""
-broker_address = "m16.cloudmqtt.com"
-mqtt_username = "ilgtdaqk"
-mqtt_password = "UbNQQjmcUdqq"
-port = 14543
-"""
+# # Public Message Broker
+# broker_address = "m16.cloudmqtt.com"
+# mqtt_username = "ilgtdaqk"
+# mqtt_password = "UbNQQjmcUdqq"
+# port = 14543
+# topic_publish = "dpsim-powerflow"
 
-# ACS Message Broker
-broker_address = "127.0.0.1"
-mqtt_username = "sogno_user"
-mqtt_password = "sogno_pass"
-port = 1883
+
+# # ACS Message Broker
+# broker_address = "platform-broker"
+# mqtt_username = "sogno_user"
+# mqtt_password = "sogno_pass"
+# port = 1883
+# topic_publish = "dpsim-powerflow"
+
+# Message Broker according to environment variables
+broker_address = os.environ['HOSTNAME_BROKER']
+mqtt_username = os.environ['MQTT_USER']
+mqtt_password = os.environ['MQTT_PASS']
+port = int(os.environ['MQTT_PORT'])
+topic_publish = os.environ['PUBLISH_TOPIC']
 
 os.chdir(os.path.dirname(__file__))
 print(os.getcwd())
