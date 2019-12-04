@@ -17,4 +17,3 @@ EXPOSE 1883
 WORKDIR /state-estimation-service/examples/
 
 CMD ["sh", "-c", "sleep 30 &&  python ./dummy_simulator.py"]
-# ENTRYPOINT [ "python", "./examples/quickstart/dummy_simulator.py"]

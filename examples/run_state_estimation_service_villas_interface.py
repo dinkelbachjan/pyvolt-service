@@ -10,6 +10,7 @@ from acs.state_estimation.nv_state_estimator import DsseCall
 from acs.state_estimation.measurement import MeasurementSet
 
 import sys
+import os
 from os import chdir, getcwd
 from os.path import abspath, dirname, join
 
@@ -27,7 +28,7 @@ def connect(client_name, username, password, broker_adress, port=1883):
     mqttc.on_connect = on_connect  # attach function to callback
     mqttc.on_message = on_message  # attach function to callback
     mqttc.connect(broker_adress, port)  # connect to broker
-    mqttc.loop_start()  # start loop to process callback
+    mqttc.loop_forever()  # start loop to process callback
     time.sleep(4)  # wait for connection setup to complete
 
     return mqttc
@@ -110,9 +111,7 @@ res = cimpy.cimread(xml_files)
 system = System()
 system.load_cim_data(res, Sb)
 
-client_name = "SognoDemo_Client"
-topic_subscribe = "dpsim-powerflow"
-topic_publish = "sogno-estimator"
+client_name = "StateEstimationService"
 
 """
 # Public Message Broker
@@ -126,16 +125,29 @@ broker_address = "137.226.248.91"
 mqtt_username = "villas"
 mqtt_password = "s3c0sim4!"
 port = 1883
-"""
 
 # Local SOGNO platform broker
 broker_address = "127.0.0.1"
 mqtt_username = "sogno_user"
 mqtt_password = "sogno_pass"
 port = 1883
+"""
+
+# Message Broker according to environment variables
+broker_address = os.environ['HOSTNAME_BROKER']
+mqtt_username = os.environ['MQTT_USER']
+mqtt_password = os.environ['MQTT_PASS']
+port = int(os.environ['MQTT_PORT'])
+topic_subscribe = os.environ['SUBSCRIBE_TOPIC']
+topic_publish = os.environ['PUBLISH_TOPIC']
 
 mqttc = connect(client_name, mqtt_username, mqtt_password, broker_address, port)
 
-input("Press enter to stop client...\n")
-mqttc.loop_stop()  # Stop loop
-mqttc.disconnect()  # disconnect
+#input("Press enter to stop client...\n")
+#mqttc.loop_stop()  # Stop loop
+#mqttc.disconnect()  # disconnect
+
+#mqttc.loop_forever(retry_first_connection=False)
+
+#mqttc.loop_start()
+
