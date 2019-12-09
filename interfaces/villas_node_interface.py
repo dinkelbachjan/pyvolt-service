@@ -77,7 +77,6 @@ def sendVillasNodeOutput(message, output_mapping_vector, powerflow_results, stat
     VillasNodeOutput = {}
     VillasNodeOutput["ts"] = {}
     VillasNodeOutput["ts"]["origin"] = message["ts"]["origin"]
-    VillasNodeOutput["sequence"] = message["sequence"]
 
     # calculate Vmag_err
     Vmag_err = np.zeros(len(powerflow_results.nodes))

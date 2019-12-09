@@ -19,6 +19,7 @@ RUN python setup.py develop
 WORKDIR /state-estimation-service/state-estimation/dependencies/cimpy
 RUN python setup.py develop
 
+EXPOSE 1883
 
 WORKDIR /state-estimation-service/examples/
 

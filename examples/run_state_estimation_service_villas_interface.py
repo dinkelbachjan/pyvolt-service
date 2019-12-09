@@ -21,7 +21,6 @@ from interfaces import villas_node_interface
 
 logging.basicConfig(filename='recv_client.log', level=logging.INFO, filemode='w')
 
-
 def connect(client_name, username, password, broker_adress, port=1883):
     mqttc = mqtt.Client(client_name, True)
     mqttc.username_pw_set(username, password)
@@ -49,9 +48,11 @@ def on_message(client, userdata, msg):
     """
     The callback for when a PUBLISH message is received from the server
     """
+    global sequence
 
-    message = loads(msg.payload)[0]
-    sequence = message['sequence']
+    sequence += 1
+
+    message = loads(msg.payload)[0]    
 
     if sequence > 0:
         try:
@@ -140,6 +141,8 @@ mqtt_password = os.environ['MQTT_PASS']
 port = int(os.environ['MQTT_PORT'])
 topic_subscribe = os.environ['SUBSCRIBE_TOPIC']
 topic_publish = os.environ['PUBLISH_TOPIC']
+
+sequence = -1
 
 mqttc = connect(client_name, mqtt_username, mqtt_password, broker_address, port)
 
